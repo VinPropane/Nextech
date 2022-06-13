@@ -1,0 +1,31 @@
+<div>
+  <mat-form-field>
+    <input matInput (keyup)="getFilteredStories($event.target.value)" placeholder="Title search...">
+  </mat-form-field>
+  <mat-table #table [dataSource]="stories">
+    <ng-container matColumnDef="id">
+      <mat-header-cell *matHeaderCellDef>Story ID</mat-header-cell>
+      <mat-cell *matCellDef="let story">{{story.id}}</mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="title">
+      <mat-header-cell *matHeaderCellDef>Title</mat-header-cell>
+      <mat-cell *matCellDef="let story">{{story.title}}</mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="url">
+      <mat-header-cell *matHeaderCellDef>Link</mat-header-cell>
+      <mat-cell *matCellDef="let story"><a href="{{story.url}}">{{story.url}}</a></mat-cell>
+    </ng-container>
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+  </mat-table>
+  <mat-paginator [hidden]="isLoading"
+                 (page)="pageEvent = getStories($event)"
+                 [pageSize]="50"
+                 [pageSizeOptions]="[5, 10, 25, 50, 100, 500]"
+                 showFirstLastButtons>
+  </mat-paginator>
+  <div id="loading" *ngIf="isLoading">
+    <br />
+    <b>Loading stories... Please wait...</b>
+  </div>
+</div>
